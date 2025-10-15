@@ -63,8 +63,22 @@ public class ParkingSpotController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Parking Spot not found"));
         parkingSpotService.delete(parkingSpotModel);
         return ResponseEntity.ok("Parking spot deleted successfully");
+    }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateParkingSpot(@PathVariable(value = "id") UUID id, @RequestBody @Valid ParkingSpotDto parkingSpotDto){
+        ParkingSpotModel parkingSpotModel = parkingSpotService.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Parking Spot not found"));
 
+        parkingSpotModel.setParkingSpotNumber(parkingSpotDto.getParkingSpotNumber());
+        parkingSpotModel.setApartment(parkingSpotDto.getApartment());
+        parkingSpotModel.setBlock(parkingSpotDto.getBlock());
+        parkingSpotModel.setModelCar(parkingSpotDto.getModelCar());
+        parkingSpotModel.setBrandCar(parkingSpotDto.getBrandCar());
+        parkingSpotModel.setLicensePlateCar(parkingSpotDto.getLicensePlateCar());
+
+        parkingSpotService.save(parkingSpotModel);
+        return ResponseEntity.ok("Parking spot update successfully");
     }
 
 }
