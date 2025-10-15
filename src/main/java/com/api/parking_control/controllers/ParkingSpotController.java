@@ -1,6 +1,7 @@
 package com.api.parking_control.controllers;
 
 import com.api.parking_control.dtos.ParkingSpotDto;
+import com.api.parking_control.mappers.ParkingSpotMapper;
 import com.api.parking_control.models.ParkingSpotModel;
 import com.api.parking_control.services.ParkingSpotService;
 import jakarta.validation.Valid;
@@ -13,7 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -69,14 +69,7 @@ public class ParkingSpotController {
     public ResponseEntity<Object> updateParkingSpot(@PathVariable(value = "id") UUID id, @RequestBody @Valid ParkingSpotDto parkingSpotDto){
         ParkingSpotModel parkingSpotModel = parkingSpotService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Parking Spot not found"));
-
-        parkingSpotModel.setParkingSpotNumber(parkingSpotDto.getParkingSpotNumber());
-        parkingSpotModel.setApartment(parkingSpotDto.getApartment());
-        parkingSpotModel.setBlock(parkingSpotDto.getBlock());
-        parkingSpotModel.setModelCar(parkingSpotDto.getModelCar());
-        parkingSpotModel.setBrandCar(parkingSpotDto.getBrandCar());
-        parkingSpotModel.setLicensePlateCar(parkingSpotDto.getLicensePlateCar());
-
+        ParkingSpotMapper.updateModelFromDto(parkingSpotDto, parkingSpotModel);
         parkingSpotService.save(parkingSpotModel);
         return ResponseEntity.ok("Parking spot update successfully");
     }
