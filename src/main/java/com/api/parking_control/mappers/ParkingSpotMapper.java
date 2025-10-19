@@ -2,7 +2,6 @@ package com.api.parking_control.mappers;
 
 import com.api.parking_control.dtos.ParkingSpotDto;
 import com.api.parking_control.models.ParkingSpotModel;
-
 import java.time.LocalDateTime;
 
 public class ParkingSpotMapper {

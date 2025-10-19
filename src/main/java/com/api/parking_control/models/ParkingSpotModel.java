@@ -1,7 +1,6 @@
 package com.api.parking_control.models;
 
 import jakarta.persistence.*;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
