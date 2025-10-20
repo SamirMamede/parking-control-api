@@ -1,5 +1,6 @@
 package com.api.parking_control.services;
 
+import com.api.parking_control.exceptions.BusinessException;
 import com.api.parking_control.models.ParkingSpotModel;
 import com.api.parking_control.repositories.ParkingSpotRepository;
 import org.springframework.data.domain.Page;
@@ -46,5 +47,17 @@ public class ParkingSpotService {
     @Transactional
     public void delete(ParkingSpotModel parkingSpotModel){
         parkingSpotRepository.delete(parkingSpotModel);
+    }
+
+    public void validateParkingSpotCreate(ParkingSpotModel parkingSpotModel) {
+        if(existsByLicensePlateCar(parkingSpotModel.getLicensePlateCar())){
+            throw new BusinessException("Conflict: License Plate Car is already in use!");
+        }
+        if(existsByParkingSpotNumber(parkingSpotModel.getParkingSpotNumber())){
+            throw new BusinessException("Conflict: Parking Spot is already in use!");
+        }
+        if(existsByApartmentAndBlock(parkingSpotModel.getApartment(), parkingSpotModel.getBlock())){
+            throw new BusinessException("Conflict: Parking Spot is already for this apartment/block!");
+        }
     }
 }
